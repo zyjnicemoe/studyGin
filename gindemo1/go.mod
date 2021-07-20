@@ -1,4 +1,4 @@
-module studyGin/demo2
+module studyGin/gindemo1
 
 go 1.15
 
