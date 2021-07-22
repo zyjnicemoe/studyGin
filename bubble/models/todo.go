@@ -44,7 +44,15 @@ func FindAll() (*[]Todo, error) {
 func FindById(id string) (*Todo, error) {
 	todo := &Todo{}
 	if err := dao.DB.Where("id=?", id).Find(todo).Error; err != nil {
-		return nil, err
+		return &Todo{}, err
 	}
 	return todo, nil
+}
+
+func DeleteById(id int) error {
+	return dao.DB.Delete(&Todo{Id: id}).Error
+}
+
+func UpdateTodo(todo *Todo) error {
+	return dao.DB.Save(todo).Error
 }
