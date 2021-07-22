@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
@@ -10,6 +11,12 @@ type UserInfo struct {
 	Id     uint
 	Name   string
 	Gender string `gorm:"default:'男'"`
+	Hobby  string
+}
+type User struct {
+	Id     uint
+	Name   string
+	Gender sql.NullString `gorm:"default:'男'"`
 	Hobby  string
 }
 
@@ -30,14 +37,27 @@ func main() {
 	user := &UserInfo{Id: 1}
 	log.Println(db.NewRecord(&user))
 	////创建数据行
-	//user = &UserInfo{Id:2,Name: "zhuyijun",Hobby: "游戏"}
+	//user = &UserInfo{Id: 1, Name: "zhuyijun", Hobby: "游戏"}
 	//db.Create(user)
-	db.First(user)
-	log.Println(*user)
+	//db.First(user)
+	//log.Println(*user)
 	////更新
-	db.Model(user).Update("hobby", "动漫1")
-	log.Println(*user)
+	//db.Model(user).Update("hobby", "动漫1")
+	//log.Println(*user)
 
+	db.Find(&user, "hobby=?", "动漫1")
+	log.Println(*user)
 	//db.Delete(&user)
+
+	u := &User{
+		Id:   2,
+		Name: "zhuyijun",
+		Gender: sql.NullString{
+			String: "",
+			Valid:  true,
+		},
+		Hobby: "游戏",
+	}
+	log.Println(*u)
 
 }
